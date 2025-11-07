@@ -1,0 +1,6 @@
+# librerie necessarie per il testing.
+# le versioni sono le più stabili che ho trovato sui siti di PyPi per macOs e python3.10...
+# TODO check versioni più aggiornate  
+pytest>=7.2,<8
+pytest-cov>=4.0,<5
+hypothesis>=6.0,<7
