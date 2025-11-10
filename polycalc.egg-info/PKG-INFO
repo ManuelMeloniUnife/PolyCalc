@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: polycalc
+Version: 0.0.1
+Summary: Calcolatore di polinomi, dotato di interfaccia grafica.
+Author-email: Manuel Meloni <manuel.meloni@edu.unife.it>
+Requires-Python: >=3.10
+License-File: LICENSE
+Dynamic: license-file

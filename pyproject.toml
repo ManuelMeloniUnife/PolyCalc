@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["polycalc"]
+
+[project]
+name = "polycalc"
+version = "0.0.1"
+authors = [
+    { name = "Manuel Meloni", email = "manuel.meloni@edu.unife.it" },
+]
+description = "Calcolatore di polinomi, dotato di interfaccia grafica."
+requires-python = ">=3.10"
+dependencies = [
+    #TODO aggiungere dipendenzeusate nel progetto!
+]
+
+# [project.scripts]
+# TODO una volta implementata la gui, questo servirà per avviarla
+# polycalc-gui = "main:start_gui"
