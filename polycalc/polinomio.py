@@ -198,3 +198,62 @@ class Polinomio:
         # unisce e normalizza gli spazi
         s = " ".join(terms)
         return s.replace("+ -", "-").strip()
+
+    @classmethod
+    def from_string(cls, stringa: str) -> "Polinomio":
+        s = stringa.replace(" ", "")
+        if not s:
+            return Polinomio([])
+        # Normalize leading sign
+        if s[0] not in "+-":
+            s = "+" + s
+        # Split into terms based on sign
+        terms: List[str] = []
+        i = 0
+        while i < len(s):
+            sign = s[i]
+            j = i + 1
+            while j < len(s) and s[j] not in "+-":
+                j += 1
+            terms.append(s[i:j])
+            i = j
+
+
+        coeffs: dict[int, float] = {}
+        for t in terms:
+            if not t:
+                continue
+            sign = -1.0 if t[0] == '-' else 1.0
+            body = t[1:]
+            if 'x' not in body:
+                coeff = float(body) if body else 0.0
+                power = 0
+            else:
+                parts = body.split('x')
+                coef_str = parts[0]
+                if coef_str == "" or coef_str is None:
+                    base = 1.0
+                else:
+                    base = float(coef_str)
+                if len(parts) > 1 and parts[1].startswith('^'):
+                    power = int(parts[1][1:])
+                else:
+                    power = 1
+                coeff = base
+            coeff *= sign
+            coeffs[power] = coeffs.get(power, 0.0) + coeff
+
+
+        max_pow = max(coeffs.keys(), default=-1)
+        result = [0.0] * (max_pow + 1)
+        for p, c in coeffs.items():
+            result[p] = c
+        return Polinomio(result)
+
+
+    def __str__(self) -> str:
+        return self.to_string_human()
+
+
+    def __repr__(self) -> str:
+        return f"Polinomio({list(self.coefficienti)})"
