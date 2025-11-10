@@ -2,6 +2,10 @@ from dataclasses import dataclass
 from math import isclose, sqrt
 from typing import List, Tuple
 
+
+# utilizzo questa costante (0.0000000001) perchè so che in python molti valori float non sono precisi,
+# ad esempio se ho 0.001 + 0.001 posso ottenere valori come : 0.0020000002...
+# quindi con questa cosatante e la funzione isclose posso accettare un piccolo margine di errore.
 TOL = 1e-9
 
 def _normalize(coeffs: List[float]) -> List[float]:
@@ -12,4 +16,38 @@ def _normalize(coeffs: List[float]) -> List[float]:
         i -= 1
         
     return coeffs[:i+1]
+
+
+@dataclass(frozen=True)
+class Polinomio:
+    coefficienti: Tuple[float,...]
+    # ---- DEFINIZIONE ED ATTRIBUTI ------
+
+    # sovrascrivo l'__init__ standard del dataclass.
+    def __init__(self, coefficienti: List[float] | Tuple[float, ...]):
+        coeff_list = list(coefficienti)
+        coeff_list = _normalize(coeff_list)
+        object.__setattr__(self, "coefficienti", tuple(float(c) for c in coeff_list))
+    
+    # ---- OPERATORI ALGEBRICI ------
+
+    # somma algebrica di due polinomio (risultato è polinomio di lunghezza = alla maggiore dei due addendi).
+    def somma(self, altro: "Polinomio") -> "Polinomio":
+        max_len = max(len(self.coefficienti), len(altro.coefficienti))
+        result = [0.0]*max_len
+        for i in range(max_len):
+            a = self.coefficienti[i] if i < len(self.coefficienti) else 0.0
+            b = altro.coefficienti[i] if i < len(altro.coefficienti) else 0.0
+            result[i] = a + b
+        return Polinomio(result)
+    
+    def sottrazione(self, altro: "Polinomio") -> "Polinomio":
+        max_len = max(len(self.coefficienti), len(altro.coefficienti))
+        result = [0.0]*max_len
+        for i in range(max_len):
+            a = self.coefficienti[i] if i < len(self.coefficienti) else 0.0
+            b = altro.coefficienti[i] if i < len(altro.coefficienti) else 0.0
+            result[i] = a - b
+        return Polinomio(result)
+
 
