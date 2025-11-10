@@ -65,3 +65,32 @@ class Polinomio:
         if isclose(scalare, 0.0, abs_tol=TOL):
             return Polinomio([])
         return Polinomio([c * scalare for c in self.coefficienti])
+    
+    def divisione(self, altro: "Polinomio") -> Tuple["Polinomio", "Polinomio"]:
+        if not altro.coefficienti:
+            raise ZeroDivisionError("Divisione per polinomio zero")
+        if not self.coefficienti:
+            return Polinomio([]), Polinomio([])
+
+
+        dividend = list(self.coefficienti)
+        divisor = list(altro.coefficienti)
+        deg_n = len(dividend) - 1
+        deg_d = len(divisor) - 1
+        if deg_n < deg_d:
+            return Polinomio([]), Polinomio(dividend)
+
+
+        quotient = [0.0] * (deg_n - deg_d + 1)
+        remainder = dividend[:]
+        lead_d = divisor[-1]
+
+
+        for k in range(deg_n - deg_d, -1, -1):
+        # Calcola il coefficiente del quoziente per il termine k
+            coeff = remainder[deg_d + k] / lead_d
+            quotient[k] = coeff
+            # Sottrae (coeff * divisore) dal resto
+            for j in range(deg_d + 1):
+                remainder[j + k] -= coeff * divisor[j]
+        return Polinomio(quotient), Polinomio(_normalize(remainder))
