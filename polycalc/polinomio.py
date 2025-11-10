@@ -50,4 +50,18 @@ class Polinomio:
             result[i] = a - b
         return Polinomio(result)
 
+    def moltiplicazione(self, altro: "Polinomio") -> "Polinomio":
+        if not self.coefficienti or not altro.coefficienti:
+            # TODO controllare eventuale errore di moltiplicazione per polinomi vuoti.
+            # cosi non credo vada bene per una questione di variabili non inizializzate.
+            return Polinomio([])
+        result = [0.0] * (len(self.coefficienti) + len(altro.coefficienti) - 1)
+        for i, a in enumerate(self.coefficienti):
+            for j, b in enumerate(altro.coefficienti):
+               result[i + j] += a * b
+        return Polinomio(result)
 
+    def moltiplicazione_per_scalare(self, scalare: float) -> "Polinomio":
+        if isclose(scalare, 0.0, abs_tol=TOL):
+            return Polinomio([])
+        return Polinomio([c * scalare for c in self.coefficienti])
