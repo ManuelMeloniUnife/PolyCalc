@@ -152,4 +152,49 @@ class Polinomio:
 
     # --- UTILITY ---
 
-    
+    def __eq__(self, altro: object) -> bool:  
+        if not isinstance(altro, Polinomio):
+            return False
+        a = _normalize(list(self.coefficienti))
+        b = _normalize(list(altro.coefficienti))
+        if len(a) != len(b):
+            return False
+        return all(isclose(x, y, abs_tol=TOL) for x, y in zip(a, b))
+
+
+    def to_string_human(self) -> str:
+        if not self.coefficienti:
+            return "0"
+        terms: List[str] = []
+        for power in range(len(self.coefficienti) - 1, -1, -1):
+            coeff = self.coefficienti[power]
+            if isclose(coeff, 0.0, abs_tol=TOL):
+                continue
+            sign = "-" if coeff < 0 else "+"
+            abs_c = abs(coeff)
+            # Build term without sign
+            if power == 0:
+                core = f"{abs_c:g}"
+            elif power == 1:
+                if isclose(abs_c, 1.0, abs_tol=TOL):
+                    core = "x"
+                else:
+                    core = f"{abs_c:g}x"
+            else:
+                if isclose(abs_c, 1.0, abs_tol=TOL):
+                    core = f"1x^{power}"
+                else:
+                    core = f"{abs_c:g}x^{power}"
+
+
+            if not terms:
+                # il primo termine mantiene il segno solo se è negativoo
+                if sign == "-":
+                    terms.append(f"- {core}")
+                else:
+                    terms.append(core)
+            else:
+                terms.append(f"{sign} {core}")
+        # unisce e normalizza gli spazi
+        s = " ".join(terms)
+        return s.replace("+ -", "-").strip()
