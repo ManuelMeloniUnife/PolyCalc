@@ -1,2 +1,3 @@
 [console_scripts]
 poly = polycalc.cli:start_bash_app
+poly_gui = polycalc.gui:main

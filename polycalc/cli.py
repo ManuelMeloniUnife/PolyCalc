@@ -15,7 +15,7 @@ def start_bash_app():
         '--polinomio', #argomento polinomio necessario per il parser "valuta"
         type = str,
         required = True,
-        help = "Polinomio da valutare, scritto in stringa senza spazi. (es. '3x^2+1')"
+        help = "Polinomio da valutare, scritto in stringa, con o senza spazi. (es. '3x^2+1' o '3x^2 + 1')"
     )
 
     parser_valuta.add_argument(

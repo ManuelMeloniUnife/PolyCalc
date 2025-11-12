@@ -22,8 +22,8 @@ license = {file = ""}
 keywords = [""]
 
 [project.scripts]
-# TODO una volta implementata la gui, questo servirà per avviarla
-# polycalc-gui = "main:start_gui"
-# TODO una volta implementata la funzione main, questo comando servirà
+# TODO una volta implementata lo script gui.py, questo servirà per avviarla
+poly_gui = "polycalc.gui:main"
+# TODO una volta implementata lo script cli.py , questo comando servirà
 # ad avviare il programma tramite terminale in modo da poter usare le funzioni 
 poly = "polycalc.cli:start_bash_app"

@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 polycalc/__init__.py
 polycalc/cli.py
+polycalc/gui.py
 polycalc/polinomio.py
 polycalc.egg-info/PKG-INFO
 polycalc.egg-info/SOURCES.txt
