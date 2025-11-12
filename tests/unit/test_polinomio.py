@@ -69,8 +69,16 @@ def test_trova_radici_quadratica():
     p = Polinomio([-1, 0, 1])  # x^2 - 1
     roots = sorted(p.trova_radici())
     assert len(roots) == 2
+    # qui ho desiso di usare "isclose" poiche spesso mi vengono restituite 
+    # le radici con qualche decimale sgarrato molto dopo la virgola
     assert math.isclose(roots[0], -1.0)
     assert math.isclose(roots[1], 1.0)
+
+    # -- TEST FUNZIONI DI UTILITY E PARSER --
+    # per quello che riguarda la conversione fa polinomio a stringa e viceversa,
+    # ho preferito implementare diversi scenari per essere sicuro che qualsiasi fosse
+    #la dimensione e il grado del polinomio, la funzione di conversione e il parser
+    # funzionassero.... ho quindi testato tutte le casistiche.
 
 def test_to_string_and_str_repr():
     p = Polinomio([5, 0, -2, 1])
@@ -80,3 +88,57 @@ def test_to_string_and_str_repr():
     assert s.endswith("+ 5") or s.endswith("+5")
     assert str(p) == p.to_string_human()
     assert "Polinomio([" in repr(p)
+
+def test_from_string_roundtrip_simple():
+    s = "x^2 - x + 1"
+    p = Polinomio.from_string(s)
+    
+    # primo test: Il parsing è corretto
+    assert p == Polinomio([1, -1, 1])
+    
+    # Test 2: Il "ritorno a stringa" è corretto (normalizzando entrambi)
+    s_normalizzata = "1x^2 - x + 1" 
+    output_normalizzato = p.to_string_human().replace(" ", "").replace("+", " + ").replace("-", " - ")
+    # questo assert confronta le normalizzazioni e controlla che siano uguali, giusto per essere sicuri
+    assert output_normalizzato == s_normalizzata
+
+def test_to_string_polinomio_nullo():
+    p_vuoto = Polinomio([])
+    assert p_vuoto.to_string_human() == "0"
+    p_zero = Polinomio([0, 0, 0]) 
+    assert p_zero.to_string_human() == "0"
+
+def test_to_string_costante():
+    p_pos = Polinomio([5])
+    assert p_pos.to_string_human() == "5" 
+
+    p_neg = Polinomio([-5])
+    assert p_neg.to_string_human() == "- 5" 
+
+def test_to_string_potenza_uno():
+    p_x = Polinomio([0, 1]) 
+    assert p_x.to_string_human() == "x"
+    
+    p_meno_x = Polinomio([0, -1])
+    assert p_meno_x.to_string_human() == "- x"
+    
+    p_3x = Polinomio([0, 3])
+    assert p_3x.to_string_human() == "3x"
+
+def test_to_string_potenza_superiore():
+    
+    p_x2 = Polinomio([0, 0, 1])
+    assert p_x2.to_string_human() == "1x^2" 
+    p_meno_x2 = Polinomio([0, 0, -1])
+    assert p_meno_x2.to_string_human() == "- 1x^2"
+    
+    p_3x2 = Polinomio([0, 0, 3])
+    assert p_3x2.to_string_human() == "3x^2"
+
+def test_to_string_polinomio_completo_con_buchi():
+    p = Polinomio([1, -2, 0, 5])
+    
+    assert p.to_string_human() == "5x^3 - 2x + 1"
+    
+    p2 = Polinomio([-1, 0, 1])
+    assert p2.to_string_human() == "1x^2 - 1"
