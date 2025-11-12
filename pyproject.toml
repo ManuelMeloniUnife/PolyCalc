@@ -16,11 +16,14 @@ requires-python = ">=3.10"
 dependencies = [
     #TODO aggiungere dipendenzeusate nel progetto!
 ]
+# TODO
+readme = ""
+license = {file = ""}
+keywords = [""]
 
-# [project.scripts]
+[project.scripts]
 # TODO una volta implementata la gui, questo servirà per avviarla
 # polycalc-gui = "main:start_gui"
 # TODO una volta implementata la funzione main, questo comando servirà
 # ad avviare il programma tramite terminale in modo da poter usare le funzioni 
-# in modo versatile da terminale
-# polycalc-bash = "main:start_bash_app"
+poly = "polycalc.cli:start_bash_app"

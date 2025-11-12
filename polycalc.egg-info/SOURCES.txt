@@ -2,8 +2,10 @@ LICENSE
 README.md
 pyproject.toml
 polycalc/__init__.py
+polycalc/cli.py
 polycalc/polinomio.py
 polycalc.egg-info/PKG-INFO
 polycalc.egg-info/SOURCES.txt
 polycalc.egg-info/dependency_links.txt
+polycalc.egg-info/entry_points.txt
 polycalc.egg-info/top_level.txt
