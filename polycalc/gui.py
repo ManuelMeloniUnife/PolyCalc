@@ -43,11 +43,11 @@ class PolyCalcApp(ttk.Frame):
             frm_btn.columnconfigure(i, weight=1)
 
         ttk.Button(frm_btn, text="SUM A+B", command=self._somma).grid(row=0, column=0, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="SUB A-B").grid(row=0, column=1, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="MULT A*B").grid(row=0, column=2, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="DIV A/B").grid(row=0, column=3, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="DERIV A'").grid(row=0, column=4, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="VALUE A(x)").grid(row=0, column=5, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="SUB A-B", command=self._sottrazione).grid(row=0, column=1, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="MULT A*B", command=self._moltiplicazione).grid(row=0, column=2, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="DIV A/B", command=self._divisione).grid(row=0, column=3, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="DERIV A'", command=self._derivata ).grid(row=0, column=4, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="VALUE A(x)", command=self._valuta).grid(row=0, column=5, sticky="ew", padx=2, pady=2)
 
 
         # --- CELLA TESTO DI OUTPUT ---
@@ -89,6 +89,50 @@ class PolyCalcApp(ttk.Frame):
             p, q = self._get_polinomi()
             r = p.somma(q)
             self._append(f"Somma: {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+
+    def _sottrazione(self) -> None:
+        try:
+            p, q = self._get_polinomi()
+            r = p.sottrazione(q)
+            self._append(f"Sottrazione: {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+
+
+    def _moltiplicazione(self) -> None:
+        try:
+            p, q = self._get_polinomi()
+            r = p.moltiplicazione(q)
+            self._append(f"Moltiplicazione: {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+
+
+    def _divisione(self) -> None:
+        try:
+            p, q = self._get_polinomi()
+            quoz, resto = p.divisione(q)
+            self._append(f"Divisione A/B: Q={quoz}, R={resto}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+
+    def _derivata(self) -> None:
+        try:
+            p, _ = self._get_polinomi()
+            r = p.derivata()
+            self._append(f"Derivata A: {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+
+
+    def _valuta(self) -> None:
+        try:
+            p, _ = self._get_polinomi()
+            x = float(self.x_var.get())
+            v = p.valuta(x)
+            self._append(f"A({x}) = {v:g}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
