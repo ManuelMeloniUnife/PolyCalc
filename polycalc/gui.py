@@ -42,7 +42,7 @@ class PolyCalcApp(ttk.Frame):
         for i in range(6):
             frm_btn.columnconfigure(i, weight=1)
 
-        ttk.Button(frm_btn, text="SUM A+B").grid(row=0, column=0, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="SUM A+B", command=self._somma).grid(row=0, column=0, sticky="ew", padx=2, pady=2)
         ttk.Button(frm_btn, text="SUB A-B").grid(row=0, column=1, sticky="ew", padx=2, pady=2)
         ttk.Button(frm_btn, text="MULT A*B").grid(row=0, column=2, sticky="ew", padx=2, pady=2)
         ttk.Button(frm_btn, text="DIV A/B").grid(row=0, column=3, sticky="ew", padx=2, pady=2)
@@ -73,6 +73,24 @@ class PolyCalcApp(ttk.Frame):
         except Exception as exc:
             raise ValueError("Formato coefficienti non valido") from exc
 
+    def _get_polinomi(self) -> tuple[Polinomio, Polinomio]:
+        p1 = Polinomio(self._parse_list(self.p1_var.get()))
+        p2 = Polinomio(self._parse_list(self.p2_var.get()))
+        return p1, p2
+
+
+    def _append(self, line: str) -> None:
+        self.txt.insert("end", line + "\n")
+        self.txt.see("end")
+
+
+    def _somma(self) -> None:
+        try:
+            p, q = self._get_polinomi()
+            r = p.somma(q)
+            self._append(f"Somma: {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
 
 
 # --- FUNZIONE DI AVVIO INTERFACCIA ----
