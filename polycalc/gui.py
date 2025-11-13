@@ -7,7 +7,7 @@ class PolyCalcApp(ttk.Frame):
         super().__init__(master, padding=10)
         self.grid(sticky="nsew")
         master.title("PolyCalc")
-        master.geometry("720x500")
+        master.geometry("650x500")
         master.columnconfigure(0, weight=1)
         master.rowconfigure(0, weight=1)
 
@@ -43,12 +43,15 @@ class PolyCalcApp(ttk.Frame):
             frm_btn.columnconfigure(i, weight=1)
 
         ttk.Button(frm_btn, text="SUM A+B", command=self._somma).grid(row=0, column=0, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="SUB A-B", command=self._sottrazione).grid(row=0, column=1, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="SUB A-B", command=self._sottrazioneAB).grid(row=0, column=1, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="SUB B-A", command=self._sottrazioneBA).grid(row=1, column=1, sticky="ew", padx=2, pady=2)
         ttk.Button(frm_btn, text="MULT A*B", command=self._moltiplicazione).grid(row=0, column=2, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="DIV A/B", command=self._divisione).grid(row=0, column=3, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="DERIV A'", command=self._derivata ).grid(row=0, column=4, sticky="ew", padx=2, pady=2)
-        ttk.Button(frm_btn, text="VALUE A(x)", command=self._valuta).grid(row=0, column=5, sticky="ew", padx=2, pady=2)
-
+        ttk.Button(frm_btn, text="DIV A/B", command=self._divisioneAB).grid(row=0, column=3, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="DIV B/A", command=self._divisioneBA).grid(row=1, column=3, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="DERIV A'", command=self._derivataA ).grid(row=0, column=4, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="DERIV B'", command=self._derivataB ).grid(row=1, column=4, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="SOLVE A(x)", command=self._valutaA).grid(row=0, column=5, sticky="ew", padx=2, pady=2)
+        ttk.Button(frm_btn, text="SOLVE B(x)", command=self._valutaB).grid(row=1, column=5, sticky="ew", padx=2, pady=2)
 
         # --- CELLA TESTO DI OUTPUT ---
 
@@ -88,15 +91,23 @@ class PolyCalcApp(ttk.Frame):
         try:
             p, q = self._get_polinomi()
             r = p.somma(q)
-            self._append(f"Somma: {r}")
+            self._append(f"SUM [A+B] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
-    def _sottrazione(self) -> None:
+    def _sottrazioneAB(self) -> None:
         try:
             p, q = self._get_polinomi()
             r = p.sottrazione(q)
-            self._append(f"Sottrazione: {r}")
+            self._append(f"SUB [A-B] = {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+
+    def _sottrazioneBA(self) -> None:
+        try:
+            p, q = self._get_polinomi()
+            r = q.sottrazione(p)
+            self._append(f"SUB [B-A] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
@@ -105,29 +116,44 @@ class PolyCalcApp(ttk.Frame):
         try:
             p, q = self._get_polinomi()
             r = p.moltiplicazione(q)
-            self._append(f"Moltiplicazione: {r}")
+            self._append(f"MUL [A*B] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
 
-    def _divisione(self) -> None:
+    def _divisioneAB(self) -> None:
         try:
             p, q = self._get_polinomi()
             quoz, resto = p.divisione(q)
-            self._append(f"Divisione A/B: Q={quoz}, R={resto}")
+            self._append(f"DIV [A/B]: Q={quoz}, R={resto}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
+    
+    def _divisioneBA(self) -> None:
+        try:
+            p, q = self._get_polinomi()
+            quoz, resto = q.divisione(p)
+            self._append(f"DIV [B/A]: Q={quoz}, R={resto}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
-    def _derivata(self) -> None:
+    def _derivataA(self) -> None:
         try:
             p, _ = self._get_polinomi()
             r = p.derivata()
-            self._append(f"Derivata A: {r}")
+            self._append(f"DERIV [A'(x)] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
+    def _derivataB(self) -> None:
+        try:
+            _, q = self._get_polinomi()
+            r = q.derivata()
+            self._append(f"DERIV [B'(x)] = {r}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
 
-    def _valuta(self) -> None:
+    def _valutaA(self) -> None:
         try:
             p, _ = self._get_polinomi()
             x = float(self.x_var.get())
@@ -136,6 +162,14 @@ class PolyCalcApp(ttk.Frame):
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
+    def _valutaB(self) -> None:
+        try:
+            _ , p = self._get_polinomi()
+            x = float(self.x_var.get())
+            v = p.valuta(x)
+            self._append(f"A({x}) = {v:g}")
+        except Exception as e:
+            messagebox.showerror("Errore", str(e))
 
 # --- FUNZIONE DI AVVIO INTERFACCIA ----
 
