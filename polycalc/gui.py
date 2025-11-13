@@ -61,6 +61,20 @@ class PolyCalcApp(ttk.Frame):
         self.txt = tk.Text(frm_out, wrap="word")
         self.txt.grid(row=0, column=0, sticky="nsew")
 
+# --- SEZIONE DI IMPLEMENTAZIONE DELLA LOGICA ---
+    @staticmethod
+    def _parse_list(text: str) -> list[float]:
+        try:
+            if "," in text:
+                parts = [p.strip() for p in text.split(",") if p.strip()]
+            else:
+                parts = [p.strip() for p in text.split() if p.strip()]
+            return [float(p) for p in parts]
+        except Exception as exc:
+            raise ValueError("Formato coefficienti non valido") from exc
+
+
+
 # --- FUNZIONE DI AVVIO INTERFACCIA ----
 
 def main() -> None:
