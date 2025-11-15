@@ -142,3 +142,42 @@ def test_to_string_polinomio_completo_con_buchi():
     
     p2 = Polinomio([-1, 0, 1])
     assert p2.to_string_human() == "1x^2 - 1"
+
+# DOPO OI TEST SOPRA LA COPERTURA DEL CODICE TESTATO ERA CIRCA DELL'92%
+# IL RESTANTE 8% SONO TUTTI ERRORE GESTIONI DEGLI ERRORI E CASI SPECIALI 
+# (es. in trova_radici 'if self.get_grado() !=2 : return []')
+# la sezione sottostante testa anche queste casistiche 8il più possibile per provare
+# add avvicinarsi al 100% del codice coperto.
+
+# righe scoperte -> 57, 73, 75, 83, 118, 138, 143, 146, 148, 157, 161, 206, 225, 237 
+
+def test_copertura_get_grado_polinomio_vuoto():
+    # copre il caso if not self.coefficienti in get_grado.
+    p = Polinomio([])
+    assert p.get_grado() == -1
+
+def test_copertura_divisione_per_zero():
+    # copre il caso divisione d divisone di un polinomio per zero.
+    p1 = Polinomio([1, 2, 3])
+    p_zero = Polinomio([])
+    
+    with pytest.raises(ZeroDivisionError, match="Divisione per polinomio zero"):
+        p1.divisione(p_zero)
+
+def test_copertura_divisione_grado_inferiore():
+    # copre il caso di divisione con polin. di grado inferiore
+    p_num = Polinomio([1, 2]) 
+    p_den = Polinomio([1, 2, 3]) 
+    
+    quoz, resto = p_num.divisione(p_den)
+    
+    assert quoz == Polinomio([])
+    assert resto == p_num
+
+def test_copertura_trova_radici_grado_non_2():
+    # Copre l'eeorre di trova_radici su un polinomio di grado diverso da 2.
+    p_grado_3 = Polinomio([1, 2, 3, 4])
+    assert p_grado_3.trova_radici() == []
+    
+    p_grado_1 = Polinomio([1, 2])
+    assert p_grado_1.trova_radici() == []
