@@ -1,4 +1,5 @@
 import math
+from math import isclose, sqrt
 import pytest
 from hypothesis import given, strategies as st
 from polycalc import Polinomio
@@ -181,3 +182,47 @@ def test_copertura_trova_radici_grado_non_2():
     
     p_grado_1 = Polinomio([1, 2])
     assert p_grado_1.trova_radici() == []
+
+def test_copertura_trova_radici_delta_negativo():
+    # Copre la riga 143: Delta < 0.
+    # p = x^2 + x + 1 -> [1, 1, 1]. Delta = 1 - 4 = -3
+    p = Polinomio([1, 1, 1])
+    assert p.trova_radici() == []
+
+def test_copertura_trova_radici_delta_zero():
+    #Copre le righe 146, 148: Delta == 0.
+    # p = x^2 + 2x + 1 -> [1, 2, 1]. Delta = 4 - 4 = 0
+    p = Polinomio([1, 2, 1])
+    radici = p.trova_radici()
+    assert len(radici) == 1
+    assert isclose(radici[0], -1.0)
+
+def test_copertura_eq_tipo_diverso():
+    # onfronto con tipo non Polinomio.
+    p = Polinomio([1])
+    assert (p == 1) == False
+    assert (p == "ciao") == False
+
+def test_copertura_eq_lunghezza_diversa():
+    #confronto con Polinomio di len diversa.
+    p1 = Polinomio([1])
+    p2 = Polinomio([1, 2])
+    assert (p1 == p2) == False
+
+def test_copertura_from_string_vuota():
+    #parsing di stringa vuota.
+    p = Polinomio.from_string("")
+    assert p == Polinomio([])
+
+def test_copertura_from_string_termini_vuoti():
+    # parsing con termini vuoti (es. doppio segno).
+    # Questo test copre il caso 'if not t: continue'
+    p = Polinomio.from_string("x^2 + + 1")
+    assert p == Polinomio([1, 0, 1])
+
+def test_copertura_from_string_potenza_implicita_1():
+    # parsing di un termine tipo '3x'.
+    # Il 'if' in riga 237 fallisce (non c'è '^')
+    # e il codice prosegue impostando power=1
+    p = Polinomio.from_string("3x + 2")
+    assert p == Polinomio([2, 3])
