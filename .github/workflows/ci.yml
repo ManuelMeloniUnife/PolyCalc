@@ -1,0 +1,40 @@
+#nome del workflow
+name: PolyCalc CI
+
+# questo è il trigger, parte ogni volta che facciamo push o una pull req.
+on:
+  push:
+  pull_request:
+
+# questi sono i jobs, cioè i lavori da eseguire...
+jobs:
+  # per ora definiamo un unicao job che chiamiamo "test"
+  test:
+    # questo il runner, l'ultima versione di ubuntu. -> cioè la macchina virtuale
+    runs-on: ubuntu-latest
+
+    # ccomandi da eseguire (in ordineee)
+    steps:
+      # downloada codice dentro il runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # configurazione conda env dal file yml.
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: polycalc # nome env
+          environment-file: polycalc_env.yml # file di riferimento env.
+
+      # installer del nostro pacchetto in modalità editable,
+      # Dobbiamo attivare 'polycalc' nel comando
+      - name: Install package
+        shell: bash -l {0}
+        run: pip install -e .
+
+      # parte che esegue i test e verifica la copertura
+      # Dobbiamo attivare 'polycalc' anche qui
+      - name: Run tests and coverage
+        shell: bash -l {0}
+        run: pytest --cov=polycalc
