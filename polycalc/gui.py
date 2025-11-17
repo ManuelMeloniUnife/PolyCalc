@@ -193,7 +193,7 @@ class PolyCalcApp(ttk.Frame):
             _ , p = self._get_polinomi()
             x = float(self.x_var.get())
             v = p.valuta(x)
-            self._append(f"A({x}) = {v:g}")
+            self._append(f"B({x}) = {v:g}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
     
@@ -209,7 +209,7 @@ class PolyCalcApp(ttk.Frame):
         try:
             _, p = self._get_polinomi()
             r = p.integrale()
-            self._append(f"INT [A(x)] = {r}")
+            self._append(f"INT [B(x)] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 
@@ -219,7 +219,7 @@ class PolyCalcApp(ttk.Frame):
             x = float(self.x_var.get())
             y = float(self.y_var.get())
             r = p.integrale_definito(x,y)
-            self._append(f"INT [A(x)] = {r}")
+            self._append(f"INT [A(x->y)] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
     
@@ -229,7 +229,7 @@ class PolyCalcApp(ttk.Frame):
             x = float(self.x_var.get())
             y = float(self.y_var.get())
             r = p.integrale_definito(x,y)
-            self._append(f"INT [A(x)] = {r}")
+            self._append(f"INT [B(x->y)] = {r}")
         except Exception as e:
             messagebox.showerror("Errore", str(e))
 

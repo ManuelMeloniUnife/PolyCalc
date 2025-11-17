@@ -39,8 +39,8 @@ Questo progetto utilizza un set di strumenti moderno per lo sviluppo e il deploy
 
 Questo progetto segue un'architettura che separa nettamente la logica di calcolo (il "Motore") dall'interfaccia utente (la "GUI").
 
-* **Fase 1 (In Corso):** Sviluppo e test rigorosi (TDD) del "Motore" logico.
-* **Fase 2:** Implementazione di un'interfaccia grafica (GUI) desktop (utilizzando `tkinter`) che consumerà la libreria del "Motore".
-* **Fase 3:** Integrazione del deployment della GUI containerizzata all'interno della pipeline CI/CD.
+* **Fase 1 [ ✅ ] :** Sviluppo e test rigorosi (TDD) del "Motore" logico.
+* **Fase 2 [ ✅ ] :** Implementazione di un'interfaccia grafica (GUI) desktop (utilizzando `tkinter`) che consumerà la libreria del "Motore".
+* **Fase 3 [ ✅ ] :** Integrazione del deployment della GUI containerizzata all'interno della pipeline CI/CD.
 
 ---
