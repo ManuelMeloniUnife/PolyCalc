@@ -38,3 +38,8 @@ jobs:
       - name: Run tests and coverage
         shell: bash -l {0}
         run: pytest --cov=polycalc
+
+      # ---  STEP CD ---
+      # questo runna il docker build
+      - name: Build Docker Image
+        run: docker build . --file Dockerfile --tag polycalc:latest
